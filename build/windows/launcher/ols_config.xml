@@ -1,0 +1,34 @@
+<launch4jConfig>
+  <dontWrapJar>true</dontWrapJar>
+  <headerType>gui</headerType>
+  <jar>bin</jar>
+  <outfile>ols-client.exe</outfile>
+  <errTitle></errTitle>
+  <cmdLine>-Dnl.lxtreme.ols.bundle.dir=&quot;plugins&quot; -DPlastic.defaultTheme=SkyBluer</cmdLine>
+  <chdir>ols-latest</chdir>
+  <priority>normal</priority>
+  <downloadUrl>http://java.sun.com/javase/downloads/</downloadUrl>
+  <supportUrl></supportUrl>
+  <customProcName>false</customProcName>
+  <stayAlive>false</stayAlive>
+  <manifest></manifest>
+  <icon>application.ico</icon>
+  <classPath>
+    <mainClass>nl.lxtreme.ols.runner.Runner</mainClass>
+    <cp>bin\*</cp>
+  </classPath>
+  <jre>
+    <path>java</path>
+    <minVersion>1.5.0</minVersion>
+    <maxVersion></maxVersion>
+    <jdkPreference>preferJre</jdkPreference>
+    <opt>-Xms128m -Xmx1024m</opt>
+  </jre>
+  <messages>
+    <startupErr>An error occurred while starting the application.</startupErr>
+    <bundledJreErr>This application was configured to use a bundled Java Runtime Environment but the runtime is missing or corrupted.</bundledJreErr>
+    <jreVersionErr>This application requires at least Java Development Kit</jreVersionErr>
+    <launcherErr>The registry refers to a nonexistent Java Development Kit  installation or the runtime is corrupted.</launcherErr>
+    <instanceAlreadyExistsMsg>An application instance is already running.</instanceAlreadyExistsMsg>
+  </messages>
+</launch4jConfig>
