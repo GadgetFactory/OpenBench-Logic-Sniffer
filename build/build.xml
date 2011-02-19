@@ -1,5 +1,7 @@
 <?xml version="1.0"?>
 <project name="OLS" default="build">
+<!-- This build file was derived from the Arduino build file -->
+
   
   <!-- Sets properties for macosx/windows/linux depending on current system -->
   <condition property="macosx"><os family="mac" /></condition>
@@ -48,18 +50,16 @@
   <!-- - - - - - - - - - - - - - - - - - -->
   
   <target name="subprojects-clean">
-    <exec executable="bash" dir="../client/ols">
+    <exec executable="bash" dir="../client/jawi-ols">
       <arg line="-c 'mvn clean'" />
     </exec>		
   </target>
   
-  <target name="subprojects-build">
-    <!--<subant buildpath="../core" target="build"/>-->
-    <!--<subant buildpath="../app" target="build"/>-->
-    <exec executable="bash" dir="../client/ols">
+<target name="subprojects-build">
+    <exec executable="bash" dir="../client/jawi-ols">
       <arg line="-c 'mvn install'" />
-    </exec>	
-  </target>
+    </exec>
+  </target> 
   
   
   <!-- - - - - - - - - -->
@@ -70,16 +70,16 @@
     <fail unless="target.path" 
 	  message="Do not call assemble from the command line." />
     
-    <!-- copy shared tools folder -->
-    <copy todir="${target.path}/tools">
-      <fileset dir="shared/tools" />
+    <!-- copy OLS_Upgrader folder -->
+    <copy todir="${target.path}/OLS_Upgrader">
+      <fileset dir="../OLS_Upgrader" />
     </copy>
    
     <!-- Unzip documentation 
     <unzip dest="${target.path}" src="shared/reference.zip" overwrite="false"/> -->
     
-    <!-- Write the revision file! -->
-    <echo file="${target.path}/lib/version.txt" message="${version}" />
+    <!-- Write the revision file! 
+    <echo file="${target.path}/lib/version.txt" message="${version}" />-->
   </target>
 
   
@@ -100,18 +100,14 @@
     </loadfile>
     <!-- <echo message="revision is ${revision}." /> -->
     
-    <!-- figure out the revision number in base.java 
-    <loadfile srcfile="../app/src/processing/app/Base.java" 
-	      property="revision.base">
-      <filterchain>
-	<tokenfilter>
-	  <linetokenizer />
-	  <containsregex pattern="String VERSION_NAME = "/>
-	  <replaceregex pattern="[^0-9]*" flags="g" replace=""/>
-	</tokenfilter>
-      </filterchain>
-    </loadfile> -->
-    <!-- <echo message="base revision is ${revision.base}." /> -->
+	<xmlproperty file="../client/jawi-ols/pom.xml"/>
+    <echo message="Jawis Client revision is ${project.properties.ols.version}" />
+	
+	<!-- <target name="find_revision" description="Sets property 'svn.revision' to the head svn revision">
+	<taskdef resource="org/tigris/subversion/svnant/svnantlib.xml" /> 
+	<svn> <status path="src" revisionProperty="svn.revision" /> </svn> <echo>Revision: ${svn.revision}</echo> <echo file="revision.txt" append="false">${svn.revision}</echo> </target>
+	-->
+	
     
     <condition property="revision.correct">
       <!-- Using contains because I can't figure out how to get rid of the
@@ -372,7 +368,12 @@
     <mkdir dir="windows/work" />
 	
 	<!-- Unzip Jawi's Client -->
-	<unzip dest="windows/work" src="..\client\ols\ols.distribution\target\ols-latest.zip" overwrite="true"/>
+	<unzip dest="windows/work/" src="..\client\jawi-ols\ols.distribution\target\ols-${project.properties.ols.version}.zip" overwrite="true"/>
+	<move todir="windows/work/jawis-ols-client">
+		<fileset dir="windows/work/ols-${project.properties.ols.version}"/>
+	</move>
+	
+
     
     <!-- assemble the pde
     <mkdir dir="windows/work/lib" />
@@ -392,6 +393,10 @@
     <copy todir="windows/work">
       <fileset dir="windows/dist" includes="drivers/**" />
     </copy>
+	
+    <antcall target="assemble">
+      <param name="target.path" value="windows/work" />
+    </antcall>	
     
     <!-- Unzip AVR tools
     <unzip dest="windows/work/hardware" src="windows/avr_tools.zip" overwrite="false"/>
@@ -399,10 +404,7 @@
     <copy todir="windows/work/hardware/tools/avr/avr/include/avr">
       <fileset file="windows/eeprom.h" />
     </copy>
-
-    <antcall target="assemble">
-      <param name="target.path" value="windows/work" />
-    </antcall> -->
+	-->
     
     <property name="launch4j.dir" value="windows/launcher/launch4j/" />
     <taskdef name="launch4j" 
@@ -411,7 +413,7 @@
 
     <copy todir="windows/work">
       <fileset dir="windows/launcher" 
-	       includes="about.bmp, application.ico, config.xml, ols_config.xml"/>
+	       includes="application.ico, config.xml, ols_config.xml"/>
     </copy>
     <!--<launch4j configFile="windows/work/config.xml" />-->
 	<launch4j configFile="windows/work/ols_config.xml" />	

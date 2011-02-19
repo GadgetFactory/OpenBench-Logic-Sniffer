@@ -1,0 +1,43 @@
+2/8/2011 Test Release 3.06
+	-First release of the Verilog "Demon" core.
+	-RLE is fixed
+	-HP 16550a Advanced triggers
+	-Meta data
+
+1/10/2011 Full release 2.12b
+	-Support for OLS 1.04 added.
+	-Support for Winbond SPI chips added.
+	-PIC Firmware 2.3
+	-Icons added for start menu.
+
+8/17/2010 Test Release 2.12
+	-Dynamic memory depth is controlled by selecting channel groups in the client.
+		-4 channel groups selected makes 6K memory depth available.
+		-2 channel groups selected makes 12K memory depth available.
+		-1 channel group selected makes 24K memory depth available.
+
+6/29/2010 Test Release 2.11
+	-Extends memory depths from 8k, and 16k to 12k, and 24k
+	-Fixes RLE for all memory depths. (Note: Be sure that channel group 4 is selected when using RLE.)
+5/25/2010 Test Release 2.04
+	-Still uses SPI mode
+	-If channel group 3 and 4 is disabled the 8K of memory depth is available.
+	-When all channel groups are selected then 4k of memory depth is available.
+	-Supports inside and outside number scheme.
+	-Supports Test mode.
+5/25/2010 Test Release 2.03
+	-SPI Mode replaces the UART communications between FPGA and PIC.
+	-No support for Test mode or multiple Number Schemes.
+4/30/2010 Version 2.01
+	-Adds Number Scheme dropdown box to the Sump Java Client
+	-Adds Test Mode under Number Scheme dropdown box. Connect a ribbon cable between the Wing connector and the Buffered connector to test all channels.
+	-Adds two new flags to the VHDL for Test Mode and Alt Number Scheme
+2/10/2010 Version 2.0
+	-Multiple BRAM configurations files are included. Modify sram_bram.vhd to select desired.
+	-extClockIn, extClockOut, extTriggerIn, and extTriggerOut are all defined, routed to external pins and seem to work in testing.
+	-The arm and trigger LED's are connected and are working.
+2/9/2010 Version 1.1
+	-Extended BRAM to 6Kx32 instead of 4kX32
+2/8/2010 Version 1.01
+	-Removed LED connections and changed the trx multiplier setting.
+	-Renamed core project name so the output file would be Logic_Sniffer.

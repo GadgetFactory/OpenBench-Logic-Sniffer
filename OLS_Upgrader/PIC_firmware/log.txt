@@ -1,0 +1,4 @@
+[24/10/2010 23:28:49] !!! Err: Assertion: m_hDevice != INVALID_HANDLE_VALUE  File: .\pic_bootloader.cpp, Line: 546
+[24/10/2010 23:29:00] !!! Err: Assertion: m_hDevice != INVALID_HANDLE_VALUE  File: .\pic_bootloader.cpp, Line: 546
+[24/10/2010 23:33:49] !!! Err: Assertion: m_hDevice != INVALID_HANDLE_VALUE  File: .\pic_bootloader.cpp, Line: 546
+[25/10/2010 00:02:07] !!! Err: Assertion: m_hDevice != INVALID_HANDLE_VALUE  File: .\pic_bootloader.cpp, Line: 546

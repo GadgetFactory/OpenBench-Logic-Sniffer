@@ -2,10 +2,10 @@
   <dontWrapJar>true</dontWrapJar>
   <headerType>gui</headerType>
   <jar>bin</jar>
-  <outfile>ols-client.exe</outfile>
+  <outfile>Jawis-OLS-client.exe</outfile>
   <errTitle></errTitle>
   <cmdLine>-Dnl.lxtreme.ols.bundle.dir=&quot;plugins&quot; -DPlastic.defaultTheme=SkyBluer</cmdLine>
-  <chdir>ols-latest</chdir>
+  <chdir>jawis-ols-client</chdir>
   <priority>normal</priority>
   <downloadUrl>http://java.sun.com/javase/downloads/</downloadUrl>
   <supportUrl></supportUrl>
