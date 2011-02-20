@@ -55,7 +55,7 @@
     </exec>		
   </target>
   
-  <target name="subprojects-update">
+  <target name="update" description="Download/Update sub projects.">
     <exec executable="bash" dir="../">
       <arg line="-c 'git submodule init; git submodule update'" />
     </exec>		
