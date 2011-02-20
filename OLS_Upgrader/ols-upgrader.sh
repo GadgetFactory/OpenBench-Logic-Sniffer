@@ -12,8 +12,6 @@ bindir=linbin
 defaultcom=/dev/ttyACM0
 
 
-
-
 #Determine if we are in Windows on cygwin
 if [ "$OSTYPE" == 'cygwin' ]; then
 	export PATH=winbin\:$PATH
