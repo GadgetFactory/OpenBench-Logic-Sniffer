@@ -1,0 +1,3 @@
+[submodule "client/jawis-client"]
+	path = client/jawis-client
+	url = http://github.com/jawi/ols.git
