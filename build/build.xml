@@ -50,13 +50,19 @@
   <!-- - - - - - - - - - - - - - - - - - -->
   
   <target name="subprojects-clean">
-    <exec executable="bash" dir="../client/jawi-ols">
+    <exec executable="bash" dir="../client/jawis-client">
       <arg line="-c 'mvn clean'" />
     </exec>		
   </target>
   
+  <target name="subprojects-update">
+    <exec executable="bash" dir="../client/jawis-client">
+      <arg line="-c 'git submodule update'" />
+    </exec>		
+  </target>  
+  
 <target name="subprojects-build">
-    <exec executable="bash" dir="../client/jawi-ols">
+    <exec executable="bash" dir="../client/jawis-client">
       <arg line="-c 'mvn install'" />
     </exec>
   </target> 
@@ -100,7 +106,7 @@
     </loadfile>
     <!-- <echo message="revision is ${revision}." /> -->
     
-	<xmlproperty file="../client/jawi-ols/pom.xml"/>
+	<xmlproperty file="../client/jawis-client/pom.xml"/>
     <echo message="Jawis Client revision is ${project.properties.ols.version}" />
 	
 	<!-- <target name="find_revision" description="Sets property 'svn.revision' to the head svn revision">
@@ -368,7 +374,7 @@
     <mkdir dir="windows/work" />
 	
 	<!-- Unzip Jawi's Client -->
-	<unzip dest="windows/work/" src="..\client\jawi-ols\ols.distribution\target\ols-${project.properties.ols.version}.zip" overwrite="true"/>
+	<unzip dest="windows/work/" src="..\client\jawis-client\ols.distribution\target\ols-${project.properties.ols.version}.zip" overwrite="true"/>
 	<move todir="windows/work/jawis-ols-client">
 		<fileset dir="windows/work/ols-${project.properties.ols.version}"/>
 	</move>
