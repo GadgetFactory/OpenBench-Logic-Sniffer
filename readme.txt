@@ -1,8 +1,8 @@
-The OpenBench Logic Sniffer is a $50 Open Source Logic Analyzer developed as a collaboration between Gadget Factory (www.gadgetfactory.net) and Dangerous Prototypes (www.dangerousprototypes.com). 
+The OpenBench Logic Sniffer is a $50 Open Source Logic Analyzer developed in collaboration between Gadget Factory (www.gadgetfactory.net) and Dangerous Prototypes (www.dangerousprototypes.com). 
 
 Overview
 --------
-This git repository is a super project for the Openbench Logic Sniffer source code. It contains a master build script and all of the subprojects that comprise the software for the OLS.
+This git repository is a super project to bring together all of the Openbench Logic Sniffer projects into one place. It contains a master build script and all of the subprojects that comprise the software for the OLS.
 
 Purchase
 --------
