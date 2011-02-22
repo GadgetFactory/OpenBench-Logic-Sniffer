@@ -152,14 +152,22 @@
   
   <target name="macosx-build" if="macosx" depends="revision-check, macosx-checkos, subprojects-build" description="Build Mac OS X version">
     <mkdir dir="macosx/work" />
-    
-    <!-- assemble the pde -->
+ 
+	<!-- Unzip Jawi's Client -->
+	<unzip dest="macosx/work/" src="..\client\jawis-client\ols.distribution\target\ols-${project.properties.ols.version}.zip" overwrite="true"/>
+	<move todir="macosx/work/jawis-ols-client">
+		<fileset dir="macosx/work/ols-${project.properties.ols.version}"/>
+	</move>	
+ 
+    <!-- assemble the pde 
     <copy todir="macosx/work">
       <fileset dir="macosx/" includes="template.app/**"/>
-    </copy>
+    </copy> -->
+	
+	
     
 <!--    <rename src="macosx/work/template.app" 
-	    dest="macosx/work/ols.app" />-->
+	    dest="macosx/work/ols.app" />
     <move file="macosx/work/template.app" 
 	  tofile="macosx/work/ols.app" />
 
@@ -172,10 +180,10 @@
     <copy todir="macosx/work/ols.app/Contents/Resources/Java">
       <fileset dir="shared" includes="lib/**" />
       <fileset file="shared/revisions.txt" />
-    </copy>
+    </copy> -->
 
     <!-- Unzip AVR tools -->
-    <!-- <unzip dest="macosx/work/ols.app/Contents/Resources/Java/hardware" src="macosx/dist/tools-universal.zip" overwrite="false"/> -->
+    <!-- <unzip dest="macosx/work/ols.app/Contents/Resources/Java/hardware" src="macosx/dist/tools-universal.zip" overwrite="false"/> 
 
     <exec executable="unzip">
       <arg value="-q" />
@@ -187,7 +195,7 @@
 
     <copy todir="macosx/work/ols.app/Contents/Resources/Java/hardware/tools/avr/avr/include/avr">    
       <fileset file="macosx/dist/eeprom.h" />
-    </copy>
+    </copy> -->
 
     <antcall target="assemble">
       <param name="target.path" value="macosx/work/ols.app/Contents/Resources/Java" />
@@ -281,7 +289,7 @@
     <!-- <copy todir="linux/work">
       <fileset dir="shared" includes="lib/**" />
       <fileset file="shared/revisions.txt" />
-    </copy> -->
+    </copy> 
     
     <copy todir="linux/work">
       <fileset dir="linux/dist" includes="lib/**" />
@@ -289,7 +297,7 @@
 
 	<copy todir="linux/work/hardware">
       <fileset dir="linux/dist" includes="tools/**" />
-    </copy>	
+    </copy>	-->
 	
     <!-- <copy todir="linux/work/lib" flatten="true">
       <fileset refid="runtime.jars" />
@@ -303,9 +311,9 @@
     <chmod perm="755" file="linux/work/hardware/tools/avrdude" /> -->
 
 	<!-- Unzip Jawi's Client -->
-	<unzip dest="windows/work/" src="..\client\jawis-client\ols.distribution\target\ols-${project.properties.ols.version}.zip" overwrite="true"/>
-	<move todir="windows/work/jawis-ols-client">
-		<fileset dir="windows/work/ols-${project.properties.ols.version}"/>
+	<unzip dest="linux/work/" src="..\client\jawis-client\ols.distribution\target\ols-${project.properties.ols.version}.zip" overwrite="true"/>
+	<move todir="linux/work/jawis-ols-client">
+		<fileset dir="linux/work/ols-${project.properties.ols.version}"/>
 	</move>	
 	
     <!--<copy todir="linux/work" file="linux/dist/ols" />
