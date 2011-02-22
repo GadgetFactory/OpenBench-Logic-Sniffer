@@ -19,14 +19,14 @@ if [ "$OSTYPE" == 'cygwin' ]; then
 fi
 
 #Determine if we are in Windows on cygwin
-#if [ "$OSTYPE" == 'linux-gnu' ]; then
-#	if ["$(arch)" == 'x86-64' ]; then
-#		bindir=linbin64
-#	else
-#		bindir=linbin
-#	fi
-#	chmod a+x $bindir/*
-#fi
+if [ "$OSTYPE" == 'linux-gnu' ]; then
+	if ["$(arch)" == 'x86-64' ]; then
+		bindir=linbin64
+	else
+		bindir=linbin
+	fi
+	chmod a+x $bindir/*
+fi
 
 dialog --title "OpenBench Logic Sniffer Upgrader" \
 		--msgbox "This will step you through upgrading the OpenBench Logic Sniffer to the latest version of the PIC Firmware and the FPGA ROM bitstream." 15 55
