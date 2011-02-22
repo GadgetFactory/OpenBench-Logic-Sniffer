@@ -13,16 +13,16 @@ Purchase
 Prerequisites
 -------------
 Before building ensure you have the following installed:
-* git, make, gcc-mingw, g++ (get these with cygwin for Windows)
+* git, make, gcc-mingw, g++. Get these with cygwin for Windows
 * perl
 * unzip, zip
-* ant (ant.apache.org)
+* [ant](http://ant.apache.org)
 * maven
 
 Build
 -----
 
-  `$ git clone git://github.com/GadgetFactory/OpenBench-Logic-Sniffer.git
+  `
   $ cd build
   $ ant update
   $ ant build
