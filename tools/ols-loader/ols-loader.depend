@@ -1,0 +1,93 @@
+# depslib dependency file v1.0
+1289312889 source:e:\work\butterflylogic\trunk\ols-loader\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"ols.h"
+	"serial.h"
+	"data_file.h"
+
+1285674648 e:\work\butterflylogic\trunk\ols-loader\ols.h
+	<stdint.h>
+
+1287217866 e:\work\butterflylogic\trunk\ols-loader\serial.h
+	<stdint.h>
+	<windows.h>
+	<time.h>
+	<unistd.h>
+	<termios.h>
+	<sys/select.h>
+	<sys/types.h>
+	<sys/time.h>
+	<IOKit/serial/ioss.h>
+	<sys/ioctl.h>
+
+1265230620 e:\work\butterflylogic\trunk\ols-loader\data_file.h
+	<stdint.h>
+
+1289406337 source:e:\work\butterflylogic\trunk\ols-loader\serial.c
+	<stdio.h>
+	<stdlib.h>
+	<fcntl.h>
+	<string.h>
+	"serial.h"
+
+1284138626 source:e:\work\butterflylogic\trunk\ols-loader\data_file.c
+	<stdio.h>
+	<stdlib.h>
+	"data_file.h"
+
+1289406721 source:e:\work\butterflylogic\trunk\ols-loader\ols.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"data_file.h"
+	"serial.h"
+	"ols.h"
+
+1287217859 source:e:\work\sump_shield\trunk\ols-loader\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"ols.h"
+	"serial.h"
+	"data_file.h"
+
+1285674648 e:\work\sump_shield\trunk\ols-loader\ols.h
+	<stdint.h>
+
+1287217866 e:\work\sump_shield\trunk\ols-loader\serial.h
+	<stdint.h>
+	<windows.h>
+	<time.h>
+	<unistd.h>
+	<termios.h>
+	<sys/select.h>
+	<sys/types.h>
+	<sys/time.h>
+	<IOKit/serial/ioss.h>
+	<sys/ioctl.h>
+
+1265230620 e:\work\sump_shield\trunk\ols-loader\data_file.h
+	<stdint.h>
+
+1284138626 source:e:\work\sump_shield\trunk\ols-loader\data_file.c
+	<stdio.h>
+	<stdlib.h>
+	"data_file.h"
+
+1289229764 source:e:\work\sump_shield\trunk\ols-loader\ols.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"data_file.h"
+	"serial.h"
+	"ols.h"
+
+1287822038 source:e:\work\sump_shield\trunk\ols-loader\serial.c
+	<stdio.h>
+	<stdlib.h>
+	<fcntl.h>
+	<string.h>
+	"serial.h"
+

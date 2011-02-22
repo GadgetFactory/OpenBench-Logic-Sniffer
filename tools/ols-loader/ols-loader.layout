@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_layout_file>
+	<ActiveTarget name="Release" />
+	<File name="main.c" open="1" top="0" tabpos="3">
+		<Cursor position="4142" topLine="160" />
+	</File>
+	<File name="ols.c" open="1" top="1" tabpos="1">
+		<Cursor position="1379" topLine="59" />
+	</File>
+	<File name="ols.h" open="1" top="0" tabpos="4">
+		<Cursor position="294" topLine="0" />
+	</File>
+	<File name="serial.c" open="1" top="0" tabpos="5">
+		<Cursor position="2785" topLine="133" />
+	</File>
+	<File name="serial.h" open="1" top="0" tabpos="2">
+		<Cursor position="246" topLine="0" />
+	</File>
+</CodeBlocks_layout_file>

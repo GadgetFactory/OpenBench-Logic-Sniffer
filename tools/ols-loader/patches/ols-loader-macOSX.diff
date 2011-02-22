@@ -1,0 +1,633 @@
+Index: serial.c
+===================================================================
+--- serial.c	(revision 287)
++++ serial.c	(working copy)
+@@ -14,134 +14,16 @@
+ 
+ #include "serial.h"
+ 
+-#ifdef _WIN32
+-	int DPwrite(int fd, const void* buf, int len)
+-	{
+-		HANDLE hCom = (HANDLE)fd;
+-		int res = 0;
+-		unsigned long bwritten = 0;
+-
+-
+-		res = WriteFile(hCom, buf, len, &bwritten, NULL);
+-
+-		if( res == FALSE ) {
+-			return -1;
+-		} else {
+-			return bwritten;
+-		}
+-	}
+-
+-	int DPread(int fd, void* buf, int len)
+-	{
+-		HANDLE hCom = (HANDLE)fd;
+-		int res = 0;
+-		unsigned long bread = 0;
+-
+-		res = ReadFile(hCom, buf, len, &bread, NULL);
+-
+-		if( res == FALSE ) {
+-			return -1;
+-		} else {
+-			return bread;
+-		}
+-	}
+-
+-	int DPclose(int fd)
+-	{
+-		HANDLE hCom = (HANDLE)fd;
+-
+-		CloseHandle(hCom);
+-		return 0;
+-	}
+-
+-	int DPopen(const char* path, unsigned long flags)
+-	{
+-		static char full_path[32] = {0};
+-
+-		HANDLE hCom = NULL;
+-
+-		if( path[0] != '\\' ) {
+-			_snprintf(full_path, sizeof(full_path) - 1, "\\\\.\\%s", path);
+-			path = full_path;
+-		}
+-
+-		hCom = CreateFileA(path, GENERIC_WRITE | GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+-
+-		if( !hCom || hCom == INVALID_HANDLE_VALUE ) {
+-			return -1;
+-		} else {
+-			return (int)hCom;
+-		}
+-	}
+-
+-	int __stdcall select(int nfds, fd_set* readfds, fd_set* writefds, fd_set* exceptfs, const struct timeval* timeout)
+-	{
+-		time_t maxtc = time(0) + (timeout->tv_sec);
+-		COMSTAT cs = {0};
+-	//	unsigned long dwErrors = 0;
+-
+-		if( readfds->fd_count != 1 ) {
+-			return -1;
+-		}
+-
+-		while( time(0) <= maxtc )
+-		{ //only one file supported
+-			if( ClearCommError( (HANDLE)readfds->fd_array[0], 0, &cs) != TRUE ){
+-				return -1;
+-			}
+-
+-			if( cs.cbInQue > 0 ) {
+-				return 1;
+-			}
+-
+-			Sleep(10);
+-		}
+-		return 0;
+-	}
+-
+-#else
+-#endif
+-
+-int readWithTimeout(int fd, uint8_t *out, int length, int timeout)
++int serial_setup(int fd, unsigned long speed)
+ {
+-	fd_set fds;
+-	struct timeval tv = {timeout, 0};
+-	int res = -1;
+-	int got = 0;
+-
+-	do {
+-
+-		FD_ZERO(&fds);
+-		FD_SET(fd, &fds);
+-
+-		res = select(fd + 1, &fds, NULL, NULL, &tv);
+-
+-		if( res > 0 ) {
+-			res = DPread(fd, out, length);
+-			if( res > 0 ) {
+-				length -= res;
+-				got    += res;
+-				out    += res;
+-			} else {
+-				break;
+-			}
+-		} else {
+-			return res;
+-		}
+-	} while( length > 0);
+-
+-	return got;
+-}
+-
+-int configurePort(int fd, unsigned long baudrate)
+-{
+ #ifdef WIN32
++	COMMTIMEOUTS timeouts;
+ 	DCB dcb = {0};
+ 	HANDLE hCom = (HANDLE)fd;
+ 
+ 	dcb.DCBlength = sizeof(dcb);
+ 
+-	dcb.BaudRate = baudrate;
++	dcb.BaudRate = speed;
+ 	dcb.ByteSize = 8;
+ 	dcb.Parity = NOPARITY;
+ 	dcb.StopBits = ONESTOPBIT;
+@@ -150,12 +32,23 @@
+ 		return -1;
+ 	}
+ 
+-	return (int)hCom;
++
++	timeouts.ReadIntervalTimeout = 100; 
++	timeouts.ReadTotalTimeoutMultiplier = 10;
++	timeouts.ReadTotalTimeoutConstant = 100;
++	timeouts.WriteTotalTimeoutMultiplier = 10;
++	timeouts.WriteTotalTimeoutConstant = 100;
++
++	if (!SetCommTimeouts(hCom, &timeouts)) {
++		return -1;
++	}
++	
++	return 0;
+ #else
+-    speed_t baud = B921600;
+-	struct termios g_new_tio;
++	struct termios t_opt;
++	speed_t baud;
+ 
+-	switch (baudrate) {
++	switch (speed) {
+ 		case 921600:
+ 			baud = B921600;
+ 			break;
+@@ -173,38 +66,150 @@
+ 			break;
+ 	}
+ 
+-	memset(&g_new_tio, 0x00 , sizeof(g_new_tio));
+-	cfmakeraw(&g_new_tio);
++	/* set the serial port parameters */
++	fcntl(fd, F_SETFL, 0);
++	tcgetattr(fd, &t_opt);
++	cfsetispeed(&t_opt, baud);
++	cfsetospeed(&t_opt, baud);
++	t_opt.c_cflag |= (CLOCAL | CREAD);
++	t_opt.c_cflag &= ~PARENB;
++	t_opt.c_cflag &= ~CSTOPB;
++	t_opt.c_cflag &= ~CSIZE;
++	t_opt.c_cflag |= CS8;
++	t_opt.c_lflag &= ~(ICANON | ECHO | ECHOE | ISIG);
++	t_opt.c_iflag &= ~(IXON | IXOFF | IXANY);
++	t_opt.c_oflag &= ~OPOST;
++	t_opt.c_cc[VMIN] = 0;
++	t_opt.c_cc[VTIME] = 10;
+ 
+-	g_new_tio.c_cflag |=  (CS8 | CLOCAL | CREAD);
+-	g_new_tio.c_cflag &= ~(PARENB | CSTOPB | CSIZE);
+-	g_new_tio.c_oflag = 0;
+-	g_new_tio.c_lflag = 0;
+-
+-	g_new_tio.c_cc[VTIME] = 0;
+-	g_new_tio.c_cc[VMIN] = 1;
+-
+ #ifdef MACOSX
+-
+-	if( tcsetattr(fd, TCSANOW, &g_new_tio) < 0 ) {
++	if( tcsetattr(fd, TCSANOW, &t_opt) < 0 ) {
+ 		return -1;
+ 	}
+ 
+ 	return ioctl( fd, IOSSIOSPEED, &baud );
+ #else
+-	cfsetispeed (&g_new_tio, baudrate);
+-	cfsetospeed (&g_new_tio, baudrate);
+-
+ 	tcflush(fd, TCIOFLUSH);
+ 
+-	return tcsetattr(fd, TCSANOW, &g_new_tio);
++	return tcsetattr(fd, TCSANOW, &t_opt);
+ #endif //#ifdef MACOSX
++#endif
++}
+ 
++int serial_write(int fd, const char *buf, int size)
++{
++	int ret = 0;
++#ifdef WIN32
++	HANDLE hCom = (HANDLE)fd;
++	int res = 0;
++	unsigned long bwritten = 0;
++
++
++	res = WriteFile(hCom, buf, size, &bwritten, NULL);
++
++	if( res == FALSE ) {
++		ret = -1;
++	} else {
++		ret = bwritten;
++	}
++#else
++	ret = write(fd, buf, size);
+ #endif
++
++	//fprintf(stderr, "size = %d ret = %d\n", size, ret);
++	//buspirate_print_buffer(buf, size);
++
++	if (ret != size)
++		fprintf(stderr, "Error sending data");
++	return ret;
+ }
+ 
+-int openPort(const char* dev, unsigned long flags)
++int serial_read(int fd, char *buf, int size)
+ {
+-	return DPopen(dev, O_RDWR | O_NOCTTY | O_NDELAY | flags);
++	int len = 0;
++	int ret = 0;
++	int timeout = 0;
++#ifdef WIN32
++	HANDLE hCom = (HANDLE)fd;
++	unsigned long bread = 0;
++
++	ret = ReadFile(hCom, buf, size, &bread, NULL);
++
++	if( ret == FALSE || ret==-1 ) {
++		len= -1;
++	} else {
++		len=size;
++	}
++	
++#else
++	while (len < size) {
++		ret = read(fd, buf+len, size-len);
++		if (ret == -1){
++			//printf("ret -1");
++			return -1;
++		}
++
++		if (ret == 0) {
++			timeout++;
++
++			if (timeout >= 10)
++				break;
++
++			continue;
++		}
++
++		len += ret;
++	}
++#endif
++	//printf("should have read = %i actual size = %i \n", size, len);
++	//fprintf(stderr, "should have read = %d actual size = %d \n", size, len);
++	//buspirate_print_buffer(buf, len);
++
++	if (len != size)
++		fprintf(stderr, "Error sending data");
++
++	return len;
+ }
+ 
++int serial_open(const char *port)
++{
++	int fd;
++#ifdef WIN32
++	static char full_path[32] = {0};
++
++	HANDLE hCom = NULL;
++	
++	if( port[0] != '\\' ) {
++		_snprintf(full_path, sizeof(full_path) - 1, "\\\\.\\%s", port);
++		port = full_path;
++	}
++
++	hCom = CreateFileA(port, GENERIC_WRITE | GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
++
++	if( !hCom || hCom == INVALID_HANDLE_VALUE ) {
++		fd = -1;
++	} else {
++		fd = (int)hCom;
++	}
++#else
++	fd = open(port, O_RDWR | O_NOCTTY | O_NDELAY);
++	if (fd == -1) {
++		fprintf(stderr, "Could not open serial port.");
++		return -1;
++	}
++#endif
++	return fd;
++}
++
++int serial_close(int fd)
++{
++#ifdef WIN32
++	HANDLE hCom = (HANDLE)fd;
++
++	CloseHandle(hCom);
++#else
++	close(fd);
++#endif
++	return 0;
++}
++
+Index: main.c
+===================================================================
+--- main.c	(revision 287)
++++ main.c	(working copy)
+@@ -153,13 +153,13 @@
+ 
+ 	printf("Opening serial port '%s' @ %ld ... ", param_port, param_speed);
+ #ifndef NO_PUMP
+-	dev_fd = openPort(param_port, 0);
++	dev_fd = serial_open(param_port);
+ 	if (dev_fd < 0) {
+ 	    printf("Error opening :(\n");
+ 			return -1;
+ 	}
+ 
+-	if( configurePort(dev_fd, param_speed) < 0 ) {
++	if( serial_setup(dev_fd, param_speed) < 0 ) {
+ 	    printf("Error configuring :(\n");
+ 			return -1;
+ 	}
+Index: serial.h
+===================================================================
+--- serial.h	(revision 287)
++++ serial.h	(working copy)
+@@ -7,53 +7,42 @@
+  */
+ #ifndef MYSERIAL_H_
+ #define MYSERIAL_H_
+-//  #define _WIN32
+-#ifdef _WIN32
+ 
+-	#include <windows.h>
+-	#include <time.h>
++#include <stdint.h>
+ 
+-	#define O_NOCTTY 0
+-	#define O_NDELAY 0
+-	#define B115200 115200
+-	#define B921600 921600
++#ifdef WIN32
++#include <windows.h>
++#include <time.h>
+ 
+-	#define OS WINDOWS
+-    #ifndef _UWIN
+-       #define _UWIN
+-    #endif
+-    int DPwrite(int fd, const void* buf, int len);
+-    int DPread(int fd, void* buf, int len);
+-    int DPclose(int fd);
+-    int DPopen(const char* path, unsigned long flags);
+-    int __stdcall select(int nfds, fd_set* readfds, fd_set* writefds, fd_set* exceptfs, const struct timeval* timeout);
++#define B115200 115200
++#define B921600 921600
+ 
++typedef long speed_t;
+ #else
+-	#include <unistd.h>
+-	#include <termios.h>
+-	#include <sys/select.h>
+-	#include <sys/types.h>
+-	#include <sys/time.h>
+ 
+-	#ifdef MACOSX
+-		#include <IOKit/serial/ioss.h>
+-		#include <sys/ioctl.h>
++#include <unistd.h>
++#include <termios.h>
++#include <sys/select.h>
++#include <sys/types.h>
++#include <sys/time.h>
+ 
+-		#define B1500000 1500000
+-		#define B1000000 1000000
+-		#define B921600  921600
+-	#endif
+-
+ #endif
+ 
++#ifdef MACOSX
++#include <IOKit/serial/ioss.h>
++#include <sys/ioctl.h>
+ 
+-#include <stdint.h>
++#define B1500000 1500000
++#define B1000000 1000000
++#define B921600  921600
++#endif
+ 
++int serial_setup(int fd, unsigned long speed);
++int serial_write(int fd, const char *buf, int size);
++int serial_read(int fd, char *buf, int size);
++int serial_open(const char *port);
++int serial_close(int fd);
+ 
+-int readWithTimeout(int fd, uint8_t* out, int length, int timeout);
+-int configurePort(int fd, unsigned long baudrate);
+-int openPort(const char* dev, unsigned long flags);
+ 
+-
+ #endif
+ 
+Index: Makefile
+===================================================================
+--- Makefile	(revision 287)
++++ Makefile	(working copy)
+@@ -1,22 +1,22 @@
+ CC = gcc
+ CFLAGS = -g -O0 -std=c99
+ LDFLAGS =
++APP = ols-loader
++OBJS =  main.o ols.o data_file.o serial.o
+ 
+-OBJS =  main.o pump.o data_file.o serial.o
+-
+ ifeq ($(shell uname), Darwin)
+ 	CFLAGS = -g -O0 -std=c99 -DMACOSX=1 -force_cpusubtype_ALL -arch i386 -arch ppc
+ endif
+ 
+-all: pump-loader
++all: $(APP)
+ 
+-pump-loader:  $(OBJS)
+-	$(CC) $(CFLAGS) -o pump-loader $(OBJS) $(LFD_OBJS) $(LDFLAGS)
++$(APP):  $(OBJS)
++	$(CC) $(CFLAGS) -o $(APP) $(OBJS) $(LFD_OBJS) $(LDFLAGS)
+ 
+ %.o:	%.c
+ 	$(CC) $(CFLAGS) $(DEFS) -c $<
+ 
+ 
+ clean:
+-	rm -f pump-loader *.o
++	rm -f $(APP) *.o
+ 
+Index: ols.c
+===================================================================
+--- ols.c	(revision 287)
++++ ols.c	(working copy)
+@@ -37,13 +37,13 @@
+ 	uint8_t status;
+ 	int res;
+ 
+-	res = DPwrite(pump_fd, cmd, 4);
++	res = serial_write(pump_fd, cmd, 4);
+ 	if (res != 4) {
+ 		printf("Error writing to OLS\n");
+ 		return -2;
+ 	}
+ 
+-	res = readWithTimeout(pump_fd, &status, 1, 100);
++	res = serial_read(pump_fd, &status, 1);
+ 
+ 	if (res != 1) {
+ 		printf("Error reading OLS status\n");
+@@ -53,12 +53,12 @@
+     if(status==0x00){
+         printf("Passed self-test :) \n");
+     }else{
+-        if(status &  0b1) printf("ERROR: 1V2 supply failed self-test :( \n");
+-        if(status &  0b10) printf("ERROR: 2V5 supply failed self-test :( \n");
+-        if(status &  0b100) printf("ERROR: PROG_B pull-up failed self-test :( \n");
+-        if(status &  0b1000) printf("ERROR: DONE pull-up failed self-test :( \n");
+-        if(status &  0b10000) printf("ERROR: unknown ROM JEDEC ID (this could be ok...) :( \n");
+-        if(status &  0b100000) printf("ERROR: UPDATE button pull-up failed self-test :( \n");
++        if(status & 0x01 /* 0b1 */) printf("ERROR: 1V2 supply failed self-test :( \n");
++        if(status & 0x02 /* 0b10 */) printf("ERROR: 2V5 supply failed self-test :( \n");
++        if(status & 0x04 /* 0b100 */) printf("ERROR: PROG_B pull-up failed self-test :( \n");
++        if(status & 0x08 /* 0b1000 */) printf("ERROR: DONE pull-up failed self-test :( \n");
++        if(status & 0x10 /* 0b10000 */) printf("ERROR: unknown ROM JEDEC ID (this could be ok...) :( \n");
++        if(status & 0x20 /* 0b100000 */) printf("ERROR: UPDATE button pull-up failed self-test :( \n");
+     }
+ 
+ 	return 0;
+@@ -74,13 +74,13 @@
+ 	uint8_t status;
+ 	int res;
+ 
+-	res = DPwrite(pump_fd, cmd, 4);
++	res = serial_write(pump_fd, cmd, 4);
+ 	if (res != 4) {
+ 		printf("Error writing to OLS\n");
+ 		return -2;
+ 	}
+ 
+-	res = readWithTimeout(pump_fd, &status, 1, 1);
++	res = serial_read(pump_fd, &status, 1);
+ 
+ 	if (res != 1) {
+ 		printf("Error reading OLS status\n");
+@@ -100,13 +100,13 @@
+ 	uint8_t ret[7];
+ 	int res;
+ 
+-	res = DPwrite(pump_fd, cmd, 4);
++	res = serial_write(pump_fd, cmd, 4);
+ 	if (res != 4) {
+ 		printf("Error writing to OLS\n");
+ 		return -2;
+ 	}
+ 
+-	res = readWithTimeout(pump_fd, ret, 7, 1);
++	res = serial_read(pump_fd, ret, 7);
+ 
+ 	if (res != 7) {
+ 		printf("Error reading OLS id\n");
+@@ -125,7 +125,7 @@
+ 	uint8_t cmd[4] = {0x24, 0x24, 0x24, 0x24};
+ 	int res;
+ 
+-	res = DPwrite(pump_fd, cmd, 4);
++	res = serial_write(pump_fd, cmd, 4);
+ 	if (res != 4) {
+ 		printf("Error writing to OLS\n");
+ 		return -2;
+@@ -143,7 +143,7 @@
+ 	uint8_t cmd[4] = {0xFF, 0xFF, 0xFF, 0xFF};
+ 	int res;
+ 
+-	res = DPwrite(pump_fd, cmd, 4);
++	res = serial_write(pump_fd, cmd, 4);
+ 	if (res != 4) {
+ 		printf("Error writing to OLS\n");
+ 		return -2;
+@@ -162,13 +162,13 @@
+ 	int res;
+ 	int i;
+ 
+-	res = DPwrite(pump_fd, cmd, 4);
++	res = serial_write(pump_fd, cmd, 4);
+ 	if (res != 4) {
+ 		printf("Error writing to OLS\n");
+ 		return -2;
+ 	}
+ 
+-	res = readWithTimeout(pump_fd, ret, 4, 1);
++	res = serial_read(pump_fd, ret, 4);
+     // ignore jedec if flag cmd_ignore_jedec = 1
+     if (cmd_ignore_jedec ==0) {
+         if (res != 4) {
+@@ -214,7 +214,7 @@
+ 		return -3;
+ 	}
+ 
+-	res = DPwrite(pump_fd, cmd, 4);
++	res = serial_write(pump_fd, cmd, 4);
+ 	if (res != 4) {
+ 		printf("Error writing to OLS\n");
+ 		return -2;
+@@ -223,7 +223,7 @@
+ 	printf("Chip erase ... ");
+ 
+ 	while (1) {
+-		res = readWithTimeout(pump_fd, &status, 1, 1);
++		res = serial_read(pump_fd, &status, 1);
+ 
+ 		if (res == 0) {
+ 			retry ++;
+@@ -278,13 +278,13 @@
+ 
+ 	printf("Page 0x%04x read ... ", page);
+ 
+-	res = DPwrite(pump_fd, cmd, 4);
++	res = serial_write(pump_fd, cmd, 4);
+ 	if (res != 4) {
+ 		printf("Error writing CMD to OLS\n");
+ 		return -2;
+ 	}
+ 
+-	res = readWithTimeout(pump_fd, buf, PUMP_Flash[PUMP_FlashID].page_size, 1);
++	res = serial_read(pump_fd, buf, PUMP_Flash[PUMP_FlashID].page_size);
+ 
+ 	if (res == PUMP_Flash[PUMP_FlashID].page_size) {
+ 		printf("OK\n");
+@@ -326,15 +326,15 @@
+ 
+ 	printf("Page 0x%04x write ... ", page);
+ 
+-	res = DPwrite(pump_fd, cmd, 4);
+-	res += DPwrite(pump_fd, buf, PUMP_Flash[PUMP_FlashID].page_size);
+-	res += DPwrite(pump_fd, &chksum, 1);
++	res = serial_write(pump_fd, cmd, 4);
++	res += serial_write(pump_fd, buf, PUMP_Flash[PUMP_FlashID].page_size);
++	res += serial_write(pump_fd, &chksum, 1);
+ 	if (res != 4+1+PUMP_Flash[PUMP_FlashID].page_size) {
+ 		printf("Error writing CMD to OLS\n");
+ 		return -2;
+ 	}
+ 
+-	res = readWithTimeout(pump_fd, &status, 1, 1);
++	res = serial_read(pump_fd, &status, 1);
+ 
+ 	if (res != 1) {
+ 		printf("timeout\n");

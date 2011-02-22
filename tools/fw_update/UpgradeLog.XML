@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="fw_update">
+</Property><Property Name="Solution File" Value="E:\Work\dp-svn\trunk\SUMP PUMP logic analyzer\bootloader\fw_update\fw_update.sln">
+</Property><Property Name="Date" Value="Monday, February 01, 2010">
+</Property><Property Name="Time" Value="16:03 PM">
+</Property></Properties><Event ErrorLevel="0" Project="" Source="fw_update.sln" Description="Solution converted successfully">
+</Event><Event ErrorLevel="3" Project="" Source="fw_update.sln" Description="Converted">
+</Event></UpgradeLog>

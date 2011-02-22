@@ -1,0 +1,130 @@
+# depslib dependency file v1.0
+1284147850 source:e:\work\butterflylogic\trunk\ols-loader\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"ols.h"
+	"serial.h"
+	"data_file.h"
+
+1284120626 .h"
+
+1285678248 e:\work\butterflylogic\trunk\ols-loader\ols.h
+	<stdint.h>
+
+1284123984 
+
+1284142012 e:\work\butterflylogic\trunk\ols-loader\serial.h
+	<windows.h>
+	<time.h>
+	<unistd.h>
+	<termios.h>
+	<sys/select.h>
+	<sys/types.h>
+	<sys/time.h>
+	<IOKit/serial/ioss.h>
+	<sys/ioctl.h>
+	<stdint.h>
+
+1265234220 e:\work\butterflylogic\trunk\ols-loader\data_file.h
+	<stdint.h>
+
+1284145584 source:e:\work\butterflylogic\trunk\ols-loader\serial.c
+	<stdio.h>
+	<stdlib.h>
+	<fcntl.h>
+	<string.h>
+	"serial.h"
+
+1284142226 source:e:\work\butterflylogic\trunk\ols-loader\data_file.c
+	<stdio.h>
+	<stdlib.h>
+	"data_file.h"
+
+1285678191 source:e:\work\butterflylogic\trunk\ols-loader\ols.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"data_file.h"
+	"serial.h"
+	"ols.h"
+
+1285743243 source:c:\jamz\ols-loader\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<getopt.h>
+	"ols.h"
+	"serial.h"
+	"data_file.h"
+
+1285656650 c:\jamz\ols-loader\ols.h
+	<stdint.h>
+
+1284120412 c:\jamz\ols-loader\serial.h
+	<windows.h>
+	<time.h>
+	<unistd.h>
+	<termios.h>
+	<sys/select.h>
+	<sys/types.h>
+	<sys/time.h>
+	<IOKit/serial/ioss.h>
+	<sys/ioctl.h>
+	<stdint.h>
+
+1265209020 c:\jamz\ols-loader\data_file.h
+	<stdint.h>
+
+1285656592 source:c:\jamz\ols-loader\ols.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"data_file.h"
+	"serial.h"
+	"ols.h"
+
+1284123984 source:c:\jamz\ols-loader\serial.c
+	<stdio.h>
+	<stdlib.h>
+	<fcntl.h>
+	<string.h>
+	"serial.h"
+
+1284120626 source:c:\jamz\ols-loader\data_file.c
+	<stdio.h>
+	<stdlib.h>
+	"data_file.h"
+
+1284120626 source:/home/jamz/Desktop/ols-loader/data_file.c
+	<stdio.h>
+	<stdlib.h>
+	"data_file.h"
+
+1265209020 /home/jamz/Desktop/ols-loader/data_file.h
+	<stdint.h>
+
+1285774937 source:/home/jamz/Desktop/ols-loader/main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<getopt.h>
+	"ols.h"
+	"serial.h"
+	"data_file.h"
+
+1285656650 /home/jamz/Desktop/ols-loader/ols.h
+	<stdint.h>
+
+1285772838 /home/jamz/Desktop/ols-loader/serial.h
+	<windows.h>
+	<time.h>
+	<unistd.h>
+	<termios.h>
+	<sys/select.h>
+	<sys/types.h>
+	<sys/time.h>
+	<IOKit/serial/ioss.h>
+	<sys/ioctl.h>
+	<stdint.h>
+

@@ -1,0 +1,10 @@
+2007-10-18	Yuri Ovcharenko <yuri@diolan.com>
+
+	* version 0.1.0
+	* Project layout restructured.
+	* Linux support added.
+
+2006-01-22	Dmitry Kulik <dmitry@diolan.com>
+	
+	* ver. 0.0.0.4
+	* Moved to be a separate (from u2io) project.

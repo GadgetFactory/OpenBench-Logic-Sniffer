@@ -1,0 +1,61 @@
+# depslib dependency file v1.0
+1265496856 source:c:\jamz\pump-loader\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"pump.h"
+	"serial.h"
+	"data_file.h"
+
+1265204640 c:\jamz\pump-loader\pump.h
+	<stdint.h>
+
+1284120413 c:\jamz\pump-loader\serial.h
+	<windows.h>
+	<time.h>
+	<unistd.h>
+	<termios.h>
+	<sys/select.h>
+	<sys/types.h>
+	<sys/time.h>
+	<IOKit/serial/ioss.h>
+	<sys/ioctl.h>
+	<stdint.h>
+
+1265209020 c:\jamz\pump-loader\data_file.h
+	<stdint.h>
+
+1284120616 source:c:\jamz\pump-loader\pump.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"data_file.h"
+	"serial.h"
+	"pump.h"
+
+1265522056 source:e:\work\butterflylogic\trunk\pump-loader\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"pump.h"
+	"serial.h"
+	"data_file.h"
+
+1265229840 e:\work\butterflylogic\trunk\pump-loader\pump.h
+	<stdint.h>
+
+1284142012 e:\work\butterflylogic\trunk\pump-loader\serial.h
+	<windows.h>
+	<time.h>
+	<unistd.h>
+	<termios.h>
+	<sys/select.h>
+	<sys/types.h>
+	<sys/time.h>
+	<IOKit/serial/ioss.h>
+	<sys/ioctl.h>
+	<stdint.h>
+
+1265234220 e:\work\butterflylogic\trunk\pump-loader\data_file.h
+	<stdint.h>
+

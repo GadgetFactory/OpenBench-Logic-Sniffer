@@ -1,0 +1,65 @@
+    fw_update
+====================
+
+The Diolan USB BootLoader is a simple way to update firmware
+in PIC18F4455 family microcontrollers without programmers such as ICD2.
+
+fw_update is PC side counterpart of BootLoader.
+
+Visit http://www.diolan.com for more information.
+
+Requirements:
+  libusb http://libusb.sourceforge.net/
+
+Installation
+  See INSTALL for detail.
+
+License
+  GNU/LGPL and GNU/GPL. See COPYING and COPYING.LIB for detail.
+
+  Generic installation instructions
+=====================================
+
+- Install libusb
+Check your current installation. Most Linux distributives already have
+libusb installed. Use your distributive specific tools
+to check whether libusb package is installed.
+
+To install libusb from source visit the official libusb web site:
+http://libusb.sourceforge.net/.
+Download latest libusb release (libusb-x.y.z.tar.gz file),
+compile it and install (see example bellow).
+
+Example:
+% tar -zxvf libusb-x.y.z.tar.gz
+% cd libusb-x.y.z
+% ./configure
+% make
+% make install
+
+Note the last command may require user to have root rights.
+
+By default libusb is installed into /usr/local directory.
+For additional details see INSTALL file and configure --help.
+
+- Build fw_update
+
+% tar -zxvf fw_update-x.y.z.tar.gz
+% cd fw_update-x.y.z
+% ./configure
+% make 
+% make install
+
+Note the last command may require user to have root rights.
+
+By default the fw_update program is installed into /usr/local/bin.
+
+Use configure --prefix option to override the default.
+For more details see INSTALL file and configure --help.
+
+In case libusb installation directory differs from /usr/local, you
+can specify the path to libusb installation directory using
+% configure --with-usb=/path/to/libusb/dir
+or using
+% configure --with-usb-lib=/path/to/directory/contains/libusb/libraries
+% configure --with-usb-includes=/path/to/directory/contains/libusb/includes

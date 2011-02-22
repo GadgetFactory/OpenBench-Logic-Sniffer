@@ -1,0 +1,12 @@
+AC_INIT(configure.in)
+
+AM_CONFIG_HEADER(config.h)
+AM_INIT_AUTOMAKE(fw_update, 0.1.0)
+
+AC_LANG_CPLUSPLUS
+AC_PROG_CXX
+AM_PROG_LIBTOOL
+
+VL_LIB_LIBUSB
+
+AC_OUTPUT(Makefile buffer/Makefile dtrace/Makefile exception/Makefile image/Makefile osdep/Makefile parser/Makefile)
