@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Written by Jack Gassett
 # 10/25/2010
@@ -22,8 +22,10 @@ fi
 if [ "$OSTYPE" == 'linux-gnu' ]; then
 	if ["$(arch)" == 'x86-64' ]; then
 		bindir=linbin64
+		export PATH=linbin64\:$PATH
 	else
 		bindir=linbin
+		export PATH=linbin\:$PATH
 	fi
 	chmod a+x $bindir/*
 fi
