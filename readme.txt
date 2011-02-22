@@ -4,10 +4,11 @@ Overview
 --------
 This git repository is a super project to bring together all of the Openbench Logic Sniffer projects into one place. It contains a master build script and all of the subprojects that comprise the software for the OLS.
 
+
 Purchase
 --------
-Gadget Factory (http://www.gadgetfactory.net/index.php?main_page=product_info&cPath=10&products_id=30)
-Seeed Studio (http://www.seeedstudio.com/depot/preorder-open-workbench-logic-sniffer-p-612.html?cPath=75)
+[Gadget Factory](http://www.gadgetfactory.net/index.php?main_page=product_info&cPath=10&products_id=30)
+[Seeed Studio](http://www.seeedstudio.com/depot/preorder-open-workbench-logic-sniffer-p-612.html?cPath=75)
 
 Prerequisites
 -------------
