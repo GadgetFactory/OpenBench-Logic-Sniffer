@@ -278,31 +278,38 @@
   <target name="linux-build" depends="revision-check, linux-checkos, subprojects-build" description="Build linux version">
     <mkdir dir="linux/work" />
     
-    <copy todir="linux/work">
+    <!-- <copy todir="linux/work">
       <fileset dir="shared" includes="lib/**" />
       <fileset file="shared/revisions.txt" />
-    </copy>
+    </copy> -->
     
     <copy todir="linux/work">
       <fileset dir="linux/dist" includes="lib/**" />
-    </copy>
+    </copy> 
 
-    <copy todir="linux/work/lib" flatten="true">
+	<copy todir="linux/work/hardware">
+      <fileset dir="linux/dist" includes="tools/**" />
+    </copy>	
+	
+    <!-- <copy todir="linux/work/lib" flatten="true">
       <fileset refid="runtime.jars" />
-    </copy>
+    </copy> -->
     
     <antcall target="assemble">
       <param name="target.path" value="linux/work" />
     </antcall>
 
-    <copy todir="linux/work/hardware">
-      <fileset dir="linux/dist" includes="tools/**" />
-    </copy>
+    <!--
+    <chmod perm="755" file="linux/work/hardware/tools/avrdude" /> -->
 
-    <chmod perm="755" file="linux/work/hardware/tools/avrdude" />
-
-    <copy todir="linux/work" file="linux/dist/ols" />
-    <chmod perm="755" file="linux/work/ols" />
+	<!-- Unzip Jawi's Client -->
+	<unzip dest="windows/work/" src="..\client\jawis-client\ols.distribution\target\ols-${project.properties.ols.version}.zip" overwrite="true"/>
+	<move todir="windows/work/jawis-ols-client">
+		<fileset dir="windows/work/ols-${project.properties.ols.version}"/>
+	</move>	
+	
+    <!--<copy todir="linux/work" file="linux/dist/ols" />
+    <chmod perm="755" file="linux/work/ols" /> -->
   </target>
   
   <target name="linux-run" depends="linux-build" 
