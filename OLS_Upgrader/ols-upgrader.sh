@@ -77,4 +77,5 @@ read -n1 -r -p "Press any key to continue..." key
 
 dialog --title "Upgrade Finished." \
 		--msgbox "If both the portions of the upgrade process finished succesfully then you should be upgraded to the latest version." 15 55
+clear
 
