@@ -56,6 +56,7 @@ dialog --title "Com Port" \
 dialog --title "Ensure OLS is ready for loading FPGA bitstream." \
 		--msgbox "Please ensure the OLS is in update mode by holding down the update button and pressing reset. Both ACT and PWR LED's should be lit." 15 55
 
+clear
 ols-loader -write -erase -p:`cat $comport` -wB:$romdir`cat $outfile`
 ols-loader -boot -p:`cat $comport`
 read -n1 -r -p "Press any key to continue..." key
@@ -70,7 +71,9 @@ return_value=$?
 dialog --title "Ensure OLS is ready for loading PIC firmware." \
 		--msgbox "The OLS should be ready to load the PIC firmware, please verify that ACT and PWR are both lit. If they are not, place the PIC into update mode by placing a jumper between the PGC and PCD pins of the ICSP header and pressing reset. The ACT LED will light and the OLS will enumerate as a USB HID device (no driver needed)." 15 55
 
+clear
 ols-fw-update -e -w -m flash -vid 0x04D8 -pid 0xFC90 -ix $firmwaredir`cat $outfile`
+read -n1 -r -p "Press any key to continue..." key
 
 dialog --title "Upgrade Finished." \
 		--msgbox "If both the portions of the upgrade process finished succesfully then you should be upgraded to the latest version." 15 55
