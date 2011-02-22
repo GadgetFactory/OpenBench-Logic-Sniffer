@@ -22,11 +22,11 @@ Before building ensure you have the following installed:
 
 Build
 -----
-` $ git clone git://github.com/GadgetFactory/OpenBench-Logic-Sniffer.git
-  $ cd build
-  $ ant update
-  $ ant build
-  $ ant run
-  $ ant dist
-`
+` $ git clone git://github.com/GadgetFactory/OpenBench-Logic-Sniffer.git`
+`  $ cd build`
+`  $ ant update`
+`  $ ant build`
+`  $ ant run`
+`  $ ant dist`
+
 run 'ant help' to see options.
