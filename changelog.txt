@@ -1,3 +1,7 @@
+3/1/2011 Jawi's OLS Client 0.9.3 SP1
+	* February 7th, 2011, OLS version 0.9.3 SP1 released. This service pack fixes some severe bugs that crept into the last release. Use this release instead of the 0.9.3 release!;
+	* February 6th, 2011, OLS version 0.9.3 released. Major highlights: better support for RLE encoding, JTAG decoder tool added, generic device added;
+
 3/1/2011 PIC Firmware 3.0
 	Fixes
 	*SPI speed increase in v2.6 tested ok with v3.xx Demon core, made permanent
