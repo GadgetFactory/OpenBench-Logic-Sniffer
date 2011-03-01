@@ -286,6 +286,17 @@
   <target name="linux-build" depends="revision-check, linux-checkos, subprojects-build" description="Build linux version">
     <mkdir dir="linux/work" />
     
+    <antcall target="assemble">
+      <param name="target.path" value="linux/work" />
+    </antcall>	
+	
+	<!-- Unzip Jawi's Client -->
+	<unzip dest="linux/work/" src="..\client\jawis-client\ols.distribution\target\ols-${project.properties.ols.version}.zip" overwrite="true"/>
+	<move todir="linux/work/jawis-ols-client">
+		<fileset dir="linux/work/ols-${project.properties.ols.version}"/>
+	</move>		
+	
+	<!-- All commented out below -->
     <!-- <copy todir="linux/work">
       <fileset dir="shared" includes="lib/**" />
       <fileset file="shared/revisions.txt" />
@@ -303,18 +314,10 @@
       <fileset refid="runtime.jars" />
     </copy> -->
     
-    <antcall target="assemble">
-      <param name="target.path" value="linux/work" />
-    </antcall>
+
 
     <!--
     <chmod perm="755" file="linux/work/hardware/tools/avrdude" /> -->
-
-	<!-- Unzip Jawi's Client -->
-	<unzip dest="linux/work/" src="..\client\jawis-client\ols.distribution\target\ols-${project.properties.ols.version}.zip" overwrite="true"/>
-	<move todir="linux/work/jawis-ols-client">
-		<fileset dir="linux/work/ols-${project.properties.ols.version}"/>
-	</move>	
 	
     <!--<copy todir="linux/work" file="linux/dist/ols" />
     <chmod perm="755" file="linux/work/ols" /> -->
@@ -330,11 +333,11 @@
 
     <!--get src="http://dev.processing.org/build/jre-tools-6u18-linux-i586.tgz" 
 	 dest="linux/jre.tgz" 
-	 usetimestamp="true" />    
+	 usetimestamp="true" />  -->  
     <untar compression="gzip" 
 	   dest="linux/work" 
 	   src="linux/jre.tgz" 
-	   overwrite="false"/-->
+	   overwrite="false"/
 
 <!--
     <tar compression="gzip" basedir="linux/work" 
