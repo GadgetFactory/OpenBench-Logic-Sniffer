@@ -383,11 +383,11 @@
 	
     <tar compression="gzip" destfile="linux/ols-${version}-expert.tgz">
       <tarfileset dir="linux/work" 
-		  prefix="ols-${version}" 
+		  prefix="ols-${version}"
+		  excludes="java/**"
 		  /> 
       <tarfileset file="linux/work/jawis-ols-client/run.sh" filemode="755" prefix="ols-${version}/jawis-ols-client" />
       <tarfileset file="linux/work/OLS_Upgrader/ols-upgrader.sh" filemode="755" prefix="ols-${version}/OLS_Upgrader" />	  
-	  <excludes="java/**" />
     </tar>  	
 	
 	
