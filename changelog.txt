@@ -1,5 +1,11 @@
+3/1/2011 PIC Firmware 3.0
+	Fixes
+	*SPI speed increase in v2.6 tested ok with v3.xx Demon core, made permanent
+	*Updated to v3.0 to match v3.xx Demon core, this will help distinguish the full speed SPI versions for Demon core v3.xx from low-speed versions for SUMP core v2
+	*Fixed Winbond ROM read issue
+
 3/1/2011 Release 3.07 of the Verilog "Demon" core.
-Release7. Fixes problem with demux DDR captures causing bogus glitches, and issue with missed samples when armed. Also ensures the finish-now command works cleanly, and minor tweaks to the adv-trigger. Lastly, a full spec at last (see link)! Note: Please be sure to use Jawi's 0.9.3 release (or newer)!
+	Release7. Fixes problem with demux DDR captures causing bogus glitches, and issue with missed samples when armed. Also ensures the finish-now command works cleanly, and minor tweaks to the adv-trigger. Lastly, a full spec at last (see link)! Note: Please be sure to use Jawi's 0.9.3 release (or newer)!
 
 2/8/2011 Release 3.06 of the Verilog "Demon" core.
 

@@ -36,7 +36,7 @@ dialog --title "OpenBench Logic Sniffer Upgrader" \
 
 dialog --title "OpenBench Logic Sniffer FPGA Bitstream Loader" \
         --menu "Please choose the OLS bitstream to load:" 15 80 5 \
-		"logic_sniffer_3.06-Demon-Core.bit" "FPGA ROM Demon Core 3.06" \
+		"logic_sniffer_3.07-Demon-Core.bit" "FPGA ROM Demon Core 3.07" \
         "Logic_Sniffer_dynamic_depth.bit" "FPGA ROM 2.12" 2> $outfile
 return_value=$?
 
@@ -63,6 +63,7 @@ read -n1 -r -p "Press any key to continue..." key
 
 dialog --title "OpenBench Logic Sniffer PIC Firmware Loader" \
         --menu "Please choose the OLS Firmware to load:" 15 80 5 \
+		"OLSv1.firmware.v3.0.hex" "PIC Firmware Demon Core 3.0" \
 		"OLSv1.firmware.v2.6.hex" "PIC Firmware Demon Core 2.6" \
 		"OLSv1.04-firmware-v2.3.hex" "PIC Firmware 2.3" \
         "OLSv1-firmware-v2.1.hex" "PIC Firmware 2.1" 2> $outfile

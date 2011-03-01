@@ -1,0 +1,148 @@
+3/1/2011 Release 3.07 of the Verilog "Demon" core.
+Release7. Fixes problem with demux DDR captures causing bogus glitches, and issue with missed samples when armed. Also ensures the finish-now command works cleanly, and minor tweaks to the adv-trigger. Lastly, a full spec at last (see link)! Note: Please be sure to use Jawi's 0.9.3 release (or newer)!
+
+2/8/2011 Release 3.06 of the Verilog "Demon" core.
+
+-- Jan 25 Edit: Release3. Fixed SPI interface bug causing problems with PIC firmware 2.3.
+-- Jan 28 Edit: Release4. Fixed Xilinx XISE to use correct speed grade. RLE now works!
+-- Feb 2 Edit: Release5. Restored meta data, minor fixes to ensure ram writes what adv-trigger wants captured, & misc logic resets to known state. Documented the extra RLE-modes. Also, the verilog port is now on SVN!
+-- Feb 8 Edit: Release6. Removed inclusive-RLE mode, since breaks older clients and is no longer used by Jawi's. Also fixed 24-bit RLE counts. Note: Please be sure to use Jawi's 0.9.3 release (or newer)!
+
+I've been busy... A few weeks ago I ported the OLS FPGA into Verilog
+(with which I'm more familiar), and started fixing things.
+
+I design fpga's (big one's) for a living, so I quickly saw several areas
+where the old design wasn't great.
+
+My version meets timing trivially now. For fun I threw in a meta ROM &
+fixed RLE for all combination's of channels. Even added that 0x05 command
+to disable RLE mode.
+
+I then decided to show you lot exactly what you can do with an fpga.
+Too many remarks about difficulty in meeting timing, etc... :-)
+
+My goal:
+How much of a big HP 16550a timing logic analyzer can it handle?
+
+Answer:
+MOST of it. Really!
+
+
+----
+
+My version of the fpga uses 85% of the slices, keeps the legacy triggers,
+meets timing easily (at 105Mhz), and adds:
+
+Trigger Terms:
+10 more 32-bit masked value comparisons.
+2 range checks.
+2 edge checks (rising, falling, both, neither).
+2 36-bit timers (10ns to 600sec range).
+
+States:
+16 state FSM
+Each state can use any combination (AND/NAND/OR/NOR/XOR/NXOR) of the
+trigger terms for detecting a "hit" condition, and "else" condition, or
+"capture" condition.
+
+Each state also has a 20-bit hit count that must be reached before a full "hit"
+occurs. Hit actions include setting trigger(run), starting/stopping timers,
+and advancing to the next state.
+
+The "else" condition lets you punt to another state. If neither hit or else
+conditions match, then the state spins.
+
+The "capture" condition lets you control what gets sampled into RAM,
+until you flip the trigger.
+
+Grab the 16550a user's guide (Google for "HP 16550a" - it's the first hit).
+I think you'll be surprised how much got squeezed in.
+
+The advanced trigger & basic trigger can be used in parallel, though you
+lose the advanced trigger conditional "capture". Arming basic triggers
+immediately starts filling the RAM.
+
+----
+
+Commands:
+0x00 = Reset
+0x01 = Arm basic trigger
+0x02 = Query ID
+0x04 = Query Meta Data*
+0x05 = Disable RLE (fifo will fill at normal sampling speed)*
+0x0F = Arm advanced trigger*
+0x9E = Write trigger select*
+0x9F = Write trigger data*
+
+Additional flag register bits:
+Bit 11: Internal test pattern mode (supplies data internally).
+Bits[15:14]: RLE-Encoding Mode.
+
+The RLE-Encoding modes are:
+0 = Issue <values> & <rle-count> as pairs. Counts are exclusive of value. Backwards compatible.
+1 = Same as mode 0.
+2 = Periodic. <values> reissued approx every 256 <rle-count> fields.
+3 = Unlimited. <values> can be followed by unlimited numbers of <rle-counts>.
+
+----
+
+A few details...
+
+I use a low-level FPGA primitive called a LUT-RAM for most of this stuff.
+An fpga is a large array of LUT's with a flop (optional) attached. LUT's
+are 16-bit RAM's, and serially configured during bootstrap to describe
+combinatorial logic. Think shift-register.
+
+However... you can dynamically change the contents of LUT RAM's. Thus
+a single LUT can evaluate 4 bits of indata directly.
+
+I use them for the trigger terms, range checks -- in combination with a
+fast-carry-chain primitive -- and edge checks. I also use them for
+combining the results of the trigger terms.
+
+Nothing is entirely free, and configuring this thing is... involved.
+There is something like 10000 config bits. I've defined two long
+commands, for selecting config addresses (0x9E) & writing data to the
+trigger (0x9F). These pump data serially into the LUT RAM's.
+
+As proof of concept, I revamped the legacy/basic triggers to use the
+same LUT based logic. It remains fully client compatible, assuming said
+client writes the data & masks for each trigger sequentially.
+
+----
+
+Compiling/Building:
+
+Open "XISE\ols-verilog.xise" in Xilinx ISE. Click on "Generate Programming
+File", and it should finish within a few minutes easily. In a tiny fpga like
+this, meeting timing at high utilization -should- be easy.
+
+The OLS had combinatorial logic between I/O & the first flops (big no-no in
+an fpga), and was using negedge flops at the SRAM interface which cut the
+timing budget in half. There was an asynchronous timing hazard between the
+sampled data & core logic. Also various other places with smaller issues.
+All fixed now.
+
+Verilog Source Code on Gadget Factory SVN
+
+----
+
+Simulating:
+
+I use Icarus-Verilog to simulate it. Scripts are provided to launch
+simulations & view results in GTK.
+
+----
+
+I need to write a proper spec for this, but "testbench_adv.v" shows the
+various options. The heavy lifter is in "trigger_adv.v"
+
+My next big project is writing a client app to program the triggers.
+In the meantime, I hope you like it! :-)
+
+You can download the FPGA image to OLS using ols_loader (use *.MCS file), or my
+Windows GUI Image downloader (use either MCS or BIT file). Available here:
+-- Logic Sniffer Image Loader --
+
+Enjoy!
+-- IED
