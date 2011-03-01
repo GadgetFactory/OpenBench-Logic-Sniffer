@@ -337,7 +337,7 @@
     <untar compression="gzip" 
 	   dest="linux/work" 
 	   src="linux/jre.tgz" 
-	   overwrite="false"/
+	   overwrite="false"/>
 
 <!--
     <tar compression="gzip" basedir="linux/work" 
