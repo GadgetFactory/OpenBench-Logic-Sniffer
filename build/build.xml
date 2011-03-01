@@ -378,9 +378,7 @@
       <tarfileset dir="linux/work" 
 		  prefix="ols-${version}" 
 		  /> 
-      <tarfileset file="linux/work/ols" filemode="755" prefix="ols-${version}" />
-      <tarfileset file="linux/work/hardware/tools/avrdude" filemode="755" 
-		  prefix="ols-${version}/hardware/tools" />
+      <tarfileset file="linux/work/jawis-ols-client/run.sh" filemode="755" prefix="ols-${version}" />
     </tar>
 
     <echo>
