@@ -327,6 +327,9 @@
 		<fileset dir="linux/work/ols-${project.properties.ols.version}"/>
 	</move>		
 	
+	<chmod perm="755" file="linux/work/jawis-ols-client/run.sh" />
+	<chmod perm="755" file="linux/work/OLS_Upgrader/ols-upgrader.sh" />
+	
 	<!-- All commented out below -->
     <!-- <copy todir="linux/work">
       <fileset dir="shared" includes="lib/**" />
@@ -370,17 +373,27 @@
 	   src="linux/jre.tgz" 
 	   overwrite="false"/>
 
+    <tar compression="gzip" basedir="linux/work" 
+	 destfile="linux/ols-${version}.tgz" />
+
+    <tar compression="gzip" destfile="linux/ols-${version}.tgz">
+      <tarfileset dir="linux/work" 
+		  prefix="ols-${version}" 
+		  /> 
+    </tar>	   
+	   
 <!--
     <tar compression="gzip" basedir="linux/work" 
 	 destfile="linux/ols-${version}.tgz" />
--->
+
     <tar compression="gzip" destfile="linux/ols-${version}.tgz">
       <tarfileset dir="linux/work" 
 		  prefix="ols-${version}" 
 		  /> 
       <tarfileset file="linux/work/jawis-ols-client/run.sh" filemode="755" prefix="ols-${version}" />
     </tar>
-
+-->
+	
     <echo>
       =======================================================
       OLS for Linux was built. Grab the archive from   
