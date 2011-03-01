@@ -32,10 +32,28 @@
 
   <target name="dist" depends="revision-check"
 	  description="Build OLS for distribution.">
-    <input message="Enter version number:" 
+
+	<!-- <property name="dist" value="true"/> -->
+	  
+	<input message="Enter version number:" 
 	   addproperty="version"
 	   defaultvalue="${revision}" />
+	
+	<!-- Switch Jawi's client to latest stable version -->
+    <exec executable="bash" dir="../client/jawis-client">
+      <arg line="-c 'mvn clean'" />
+    </exec>		
+    <exec executable="bash" dir="../client/jawis-client">
+      <arg line="-c 'git checkout ${ols-stable-versions.jawis-client-stable}'" />
+    </exec>	
+	   
     <antcall target="${platform}-dist" />
+
+	<!-- Switch Jawi's client back to development version TODO-Move this to build section?-->
+    <exec executable="bash" dir="../client/jawis-client">
+      <arg line="-c 'git checkout master'" />
+    </exec>		
+	
   </target>
 
   <!-- "§$§$&, ant doesn't have a built-in help target :(  -->
@@ -81,6 +99,10 @@
       <fileset dir="../OLS_Upgrader" />
     </copy>
    
+    <copy todir="${target.path}">
+      <fileset file="changelog.txt" />
+    </copy>   
+   
     <!-- Unzip documentation 
     <unzip dest="${target.path}" src="shared/reference.zip" overwrite="false"/> -->
     
@@ -105,9 +127,9 @@
       </filterchain>
     </loadfile>
     <!-- <echo message="revision is ${revision}." /> -->
-    
-	<xmlproperty file="../client/jawis-client/pom.xml"/>
-    <echo message="Jawis Client revision is ${project.properties.ols.version}" />
+	
+	<xmlproperty file="ols_stable_versions.xml"/>
+    <echo message="Jawis stable client revision is ${ols-stable-versions.jawis-client-stable}" />
 	
 	<!-- <target name="find_revision" description="Sets property 'svn.revision' to the head svn revision">
 	<taskdef resource="org/tigris/subversion/svnant/svnantlib.xml" /> 
@@ -125,6 +147,15 @@
 	 if $revision wasn't found... 
     <fail unless="revision.correct" 
 	  message="Fix revision number in Base.java" /> -->
+  </target>
+  
+  <target name="jawi-unzip-dir">
+	<xmlproperty file="../client/jawis-client/pom.xml"/>
+    <echo message="Version ${project.properties.ols.version} of Jawi's OLS client will be built." />  
+	<!--<condition property="jawi-unzip" 
+	     value="${ols-stable-versions.jawis-client-stable}" else="${project.properties.ols.version}"><isset property="dist"/></condition>
+	
+    <echo message="Jawis unzip client revision is ${jawi-unzip}" />	-->
   </target>
   
   
@@ -150,7 +181,7 @@
     <fail message="wrong platform (${os.name})" />
   </target>
   
-  <target name="macosx-build" if="macosx" depends="revision-check, macosx-checkos, subprojects-build" description="Build Mac OS X version">
+  <target name="macosx-build" if="macosx" depends="revision-check, jawi-unzip-dir, macosx-checkos, subprojects-build" description="Build Mac OS X version">
     <mkdir dir="macosx/work" />
  
 	<!-- Unzip Jawi's Client -->
@@ -283,7 +314,7 @@
     <fail message="wrong platform (${os.name})" />
   </target>
   
-  <target name="linux-build" depends="revision-check, linux-checkos, subprojects-build" description="Build linux version">
+  <target name="linux-build" depends="revision-check, jawi-unzip-dir, linux-checkos, subprojects-build" description="Build linux version">
     <mkdir dir="linux/work" />
     
     <antcall target="assemble">
@@ -346,9 +377,6 @@
     <tar compression="gzip" destfile="linux/ols-${version}.tgz">
       <tarfileset dir="linux/work" 
 		  prefix="ols-${version}" 
-		  excludes="ols, 
-			    hardware/tools/avrdude,
-			    java/**"
 		  /> 
       <tarfileset file="linux/work/ols" filemode="755" prefix="ols-${version}" />
       <tarfileset file="linux/work/hardware/tools/avrdude" filemode="755" 
@@ -387,9 +415,10 @@
   </target>
   
   <target name="windows-build" 
-	  depends="revision-check, windows-checkos, subprojects-build" 
+	  depends="revision-check, jawi-unzip-dir, windows-checkos, subprojects-build" 
 	  description="Build windows version">
     <mkdir dir="windows/work" />
+		
 	
 	<!-- Unzip Jawi's Client -->
 	<unzip dest="windows/work/" src="..\client\jawis-client\ols.distribution\target\ols-${project.properties.ols.version}.zip" overwrite="true"/>
