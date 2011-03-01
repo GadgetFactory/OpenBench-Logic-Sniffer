@@ -373,9 +373,6 @@
 	   src="linux/jre.tgz" 
 	   overwrite="false"/>
 
-    <tar compression="gzip" basedir="linux/work" 
-	 destfile="linux/ols-${version}.tgz" />
-
     <tar compression="gzip" destfile="linux/ols-${version}.tgz">
       <tarfileset dir="linux/work" 
 		  prefix="ols-${version}" 
