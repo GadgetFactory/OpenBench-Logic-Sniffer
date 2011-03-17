@@ -27,9 +27,15 @@ const struct pump_flash_t PUMP_Flash[] = {
     {
 		"\xef\x30\x13\x00",
 		256, // size of page
-		1024, // number of pages
+		2048, // number of pages
 		"WINBOND W25X40"
 	},
+    {
+		"\xef\x40\x14\x00",
+		256, // size of page
+		4096, // number of pages
+		"WINBOND W25X80"
+	},	
 };
 
 #define PUMP_FLASH_NUM (sizeof(PUMP_Flash)/sizeof(struct pump_flash_t))

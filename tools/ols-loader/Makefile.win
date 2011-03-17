@@ -1,39 +1,22 @@
-# Project: Project1
-# Makefile created by Dev-C++ 4.9.9.2
+CC = mingw32-gcc
+CFLAGS = -g -O0 -std=c99 -DWIN32
+LDFLAGS =
+APP = ols-loader
+OBJS =  main.o ols.o data_file.o serial.o
 
-CPP  = g++.exe
-CC   = gcc.exe
-WINDRES = windres.exe
-RES  = 
-OBJ  = data_file.o main.o pump.o serial.o $(RES)
-LINKOBJ  = data_file.o main.o pump.o serial.o $(RES)
-LIBS =  -L"C:/Programme/Dev-Cpp/lib"  
-INCS =  -I"C:/Programme/Dev-Cpp/include" 
-CXXINCS =  -I"C:/Programme/Dev-Cpp/lib/gcc/mingw32/3.4.2/include"  -I"C:/Programme/Dev-Cpp/include/c++/3.4.2/backward"  -I"C:/Programme/Dev-Cpp/include/c++/3.4.2/mingw32"  -I"C:/Programme/Dev-Cpp/include/c++/3.4.2"  -I"C:/Programme/Dev-Cpp/include" 
-BIN  = pump-loader.exe
-CXXFLAGS = $(CXXINCS)  
-CFLAGS = $(INCS) --std=c99 -DWIN32  
-RM = rm -f
+ifeq ($(shell uname), Darwin)
+	CFLAGS = -g -O0 -std=c99 -DMACOSX=1 -force_cpusubtype_ALL -arch i386 -arch ppc
+endif
 
-.PHONY: all all-before all-after clean clean-custom
+all: $(APP)
 
-all: all-before pump-loader.exe all-after
+$(APP):  $(OBJS)
+	$(CC) $(CFLAGS) -o $(APP) $(OBJS) $(LFD_OBJS) $(LDFLAGS)
+
+%.o:	%.c
+	$(CC) $(CFLAGS) $(DEFS) -c $<
 
 
-clean: clean-custom
-	${RM} $(OBJ) $(BIN)
+clean:
+	rm -f $(APP) *.o
 
-$(BIN): $(OBJ)
-	$(CPP) $(LINKOBJ) -o "pump-loader.exe" $(LIBS)
-
-data_file.o: data_file.c
-	$(CPP) -c data_file.c -o data_file.o $(CXXFLAGS)
-
-main.o: main.c
-	$(CPP) -c main.c -o main.o $(CXXFLAGS)
-
-pump.o: pump.c
-	$(CPP) -c pump.c -o pump.o $(CXXFLAGS)
-
-serial.o: serial.c
-	$(CPP) -c serial.c -o serial.o $(CXXFLAGS)
