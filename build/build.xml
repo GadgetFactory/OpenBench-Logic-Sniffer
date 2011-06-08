@@ -45,12 +45,7 @@
     </exec>		
     <exec executable="bash" dir="../client/jawis-client">
       <arg line="-c 'git checkout ${ols-stable-versions.jawis-client-stable}'" />
-    </exec>	
-	
-	<copy todir="linux/work">
-      <fileset dir="shared" includes="lib/**" />
-      <fileset file="shared/revisions.txt" />
-    </copy> 	
+    </exec>		
 	   
     <antcall target="${platform}-dist" />
 
