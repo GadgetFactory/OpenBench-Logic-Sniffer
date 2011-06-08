@@ -46,6 +46,11 @@
     <exec executable="bash" dir="../client/jawis-client">
       <arg line="-c 'git checkout ${ols-stable-versions.jawis-client-stable}'" />
     </exec>	
+	
+	<copy todir="linux/work">
+      <fileset dir="shared" includes="lib/**" />
+      <fileset file="shared/revisions.txt" />
+    </copy> 	
 	   
     <antcall target="${platform}-dist" />
 
@@ -100,7 +105,7 @@
     </copy>
    
     <copy todir="${target.path}">
-      <fileset file="changelog.txt" />
+      <fileset file="../changelog.txt" />
     </copy>   
    
     <!-- Unzip documentation 
