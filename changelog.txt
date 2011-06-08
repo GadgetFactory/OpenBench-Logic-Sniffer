@@ -1,3 +1,7 @@
+6/8/2011 Jawi's OLS Client 0.9.4
+	* 2011-03-17 Added updated device profiles for BusPirate, LogicShrimp and IrToy.
+	* Numerous Bug fixes
+
 3/1/2011 Jawi's OLS Client 0.9.3 SP1
 	* February 7th, 2011, OLS version 0.9.3 SP1 released. This service pack fixes some severe bugs that crept into the last release. Use this release instead of the 0.9.3 release!;
 	* February 6th, 2011, OLS version 0.9.3 released. Major highlights: better support for RLE encoding, JTAG decoder tool added, generic device added;
