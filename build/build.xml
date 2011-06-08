@@ -81,7 +81,7 @@
   
 <target name="subprojects-build">
     <exec executable="bash" dir="../client/jawis-client">
-      <arg line="-c 'mvn install'" />
+      <arg line="-c 'mvn clean install'" />
     </exec>
   </target> 
   
@@ -185,7 +185,7 @@
     <mkdir dir="macosx/work" />
  
 	<!-- Unzip Jawi's Client -->
-	<unzip dest="macosx/work/" src="..\client\jawis-client\ols.distribution\target\ols-${project.properties.ols.version}.zip" overwrite="true"/>
+	<unzip dest="macosx/work/" src="..\client\jawis-client\ols.distribution\target\ols-${project.properties.ols.version}-full.zip" overwrite="true"/>
 	<move todir="macosx/work/jawis-ols-client">
 		<fileset dir="macosx/work/ols-${project.properties.ols.version}"/>
 	</move>	
@@ -322,7 +322,7 @@
     </antcall>	
 	
 	<!-- Unzip Jawi's Client -->
-	<unzip dest="linux/work/" src="..\client\jawis-client\ols.distribution\target\ols-${project.properties.ols.version}.zip" overwrite="true"/>
+	<unzip dest="linux/work/" src="..\client\jawis-client\ols.distribution\target\ols-${project.properties.ols.version}-full.zip" overwrite="true"/>
 	<move todir="linux/work/jawis-ols-client">
 		<fileset dir="linux/work/ols-${project.properties.ols.version}"/>
 	</move>		
@@ -442,7 +442,7 @@
 		
 	
 	<!-- Unzip Jawi's Client -->
-	<unzip dest="windows/work/" src="..\client\jawis-client\ols.distribution\target\ols-${project.properties.ols.version}.zip" overwrite="true"/>
+	<unzip dest="windows/work/" src="..\client\jawis-client\ols.distribution\target\ols-${project.properties.ols.version}-full.zip" overwrite="true"/>
 	<move todir="windows/work/jawis-ols-client">
 		<fileset dir="windows/work/ols-${project.properties.ols.version}"/>
 	</move>
