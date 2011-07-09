@@ -46,7 +46,7 @@ void helpme(char** argv){
 		//printf("%s\n", argv[0]);
 		printf(" parameters: \n");
 		printf("   --port PORT  - port of Logic Sniffer, needs to be specified. Same as  -p Port \n");
-		printf("   --speed SPEED  - sets speed of the serial port. Same as -s Speed\n");
+		printf("   --speed SPEED  - sets speed of the serial port. Same as -t Speed\n");
 		printf("   --wH FILE - HEX file to be uploaded to OLS\n");
 		printf("   --wB FILE - BIN file to be uploaded to OLS\n");
 		printf("   --rH FILE - HEX file to be downloaded from OLS\n");
