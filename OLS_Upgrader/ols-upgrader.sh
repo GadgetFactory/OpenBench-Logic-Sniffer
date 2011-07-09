@@ -35,9 +35,9 @@ dialog --title "OpenBench Logic Sniffer Upgrader" \
 
 
 dialog --title "OpenBench Logic Sniffer FPGA Bitstream Loader" \
-        --menu "Please choose the OLS bitstream to load:" 15 80 5 \
-		"logic_sniffer_3.07-Demon-Core.bit" "FPGA ROM Demon Core 3.07" \
-        "Logic_Sniffer_dynamic_depth.bit" "FPGA ROM 2.12" 2> $outfile
+		--menu "Please choose the OLS bitstream to load:" 15 80 5 \
+		"logic_sniffer_3.07-Demon-Core.bit"      "FPGA ROM Demon Core 3.07" \
+		"Logic_Sniffer_dynamic_depth_2.12.bit"   "FPGA ROM 2.12" 2> $outfile
 return_value=$?
 
 # $bindir/dialog --title "Com Port" \
@@ -63,10 +63,10 @@ read -n1 -r -p "Press any key to continue..." key
 
 dialog --title "OpenBench Logic Sniffer PIC Firmware Loader" \
         --menu "Please choose the OLS Firmware to load:" 15 80 5 \
-		"OLSv1.firmware.v3.0.hex" "PIC Firmware Demon Core 3.0" \
-		"OLSv1.firmware.v2.6.hex" "PIC Firmware Demon Core 2.6" \
-		"OLSv1.04-firmware-v2.3.hex" "PIC Firmware 2.3" \
-        "OLSv1-firmware-v2.1.hex" "PIC Firmware 2.1" 2> $outfile
+		"OLSv1.firmware.v3.0.hex"     "PIC Firmware Demon Core 3.0" \
+		"OLSv1.firmware.v2.6.hex"     "PIC Firmware Demon Core 2.6" \
+		"OLSv1.04-firmware-v2.3.hex"  "PIC Firmware 2.3" \
+		"OLSv1-firmware-v2.1.hex"     "PIC Firmware 2.1" 2> $outfile
 return_value=$?
 
 dialog --title "Ensure OLS is ready for loading PIC firmware." \
@@ -77,6 +77,6 @@ ols-fw-update -e -w -m flash -vid 0x04D8 -pid 0xFC90 -ix $firmwaredir`cat $outfi
 read -n1 -r -p "Press any key to continue..." key
 
 dialog --title "Upgrade Finished." \
-		--msgbox "If both the portions of the upgrade process finished succesfully then you should be upgraded to the latest version." 15 55
+		--msgbox "If both the portions of the upgrade process finished successfully then you should be upgraded to the latest version." 15 55
 clear
 
