@@ -98,7 +98,7 @@ int parseCommandLine(int argc, char** argv)
 	if( argc == 1 )	{
 		//print usage
 		//printf("%s\n", argv[0]);
-		printf("parameters:\n");
+		printf("Parameters:\n");
 		printf("-p:PORT  - port of Logic Sniffer, needs to be specified\n\n");
 		printf("-t:SPEED - sets speed of the serial port\n");
 		printf("-wH:FILE - HEX file to be uploaded to OLS\n");
@@ -106,20 +106,20 @@ int parseCommandLine(int argc, char** argv)
 		printf("-rH:FILE - HEX file to be downloaded from OLS\n");
 		printf("-rB:FILE - BIN file to be downloaded from OLS\n");
 //		printf("-l:0     - send only bytes from file (0-padded) - write only\n");
-		printf("-l:X     - send only first X paged \n");
-//		printf("-verbode - be noisy\n");
+		printf("-l:X     - send only first X pages\n");
+//		printf("-verbose - be noisy\n");
 		printf("commands:\n");
 		printf("-erase  - erases Flash\n");
 		printf("-write  - writes data to Flash\n");
 		printf("-read   - reads data from Flash\n");
 		printf("-ignore_jedec  - ignore jedec id\n");
 		printf("-run    - enter run mode after finished\n");
-		printf("-status - get OLS stauts\n");
+		printf("-status - get OLS status\n");
 		printf("-boot   - enter bootloader mode - ignore other commands\n");
-        printf("-selftest - run self-test - ignore other commands\n");
+		printf("-selftest - run self-test - ignore other commands\n");
 
 		printf("\n\n");
-		printf("When no command specified, program will check FW version, and Flash ID\n\n");
+		printf("When no command is specified, program will check FW version, and Flash ID\n\n");
 		printf("Usage examples:\n");
 		printf("To read Flash to HEX file 'OLS.hex' from OLS on COM2:\n");
 		printf("ols-loader -p:COM2 -rH:OLS.hex -read\n");
