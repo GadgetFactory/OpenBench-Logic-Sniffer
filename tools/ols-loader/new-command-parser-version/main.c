@@ -46,7 +46,7 @@ void helpme(char** argv){
 		//printf("%s\n", argv[0]);
 		printf(" parameters: \n");
 		printf("   --port PORT  - port of Logic Sniffer, needs to be specified. Same as  -p Port \n");
-		printf("   --speed SPEED  - sets speed of the serial port. Same as -s Speed\n");
+		printf("   --speed SPEED  - sets speed of the serial port. Same as -t Speed\n");
 		printf("   --wH FILE - HEX file to be uploaded to OLS\n");
 		printf("   --wB FILE - BIN file to be uploaded to OLS\n");
 		printf("   --rH FILE - HEX file to be downloaded from OLS\n");
@@ -62,12 +62,12 @@ void helpme(char** argv){
 		printf("   --run    - enter run mode after finished, same as -r \n");
 		printf("   --status - get OLS status, same as -s \n");
 		printf("   --boot   - enter bootloader mode - ignore other commands, same as -b\n");
-        printf("   --selftest - run self-test - ignore other commands\n");
+		printf("   --selftest - run self-test - ignore other commands\n");
 
 		printf("\n\n");
 		printf("   When no command specified, program will check FW version, and Flash ID\n\n");
 		printf("   Usage examples:\n");
-		#ifdef _WIN32
+	#ifdef _WIN32
 		printf("   To read Flash to HEX file 'OLS.hex' from OLS on COM2:\n");
 		printf("   ols-loader --port COM2 --rH OLS.hex --read\n");
 		printf("   or\n");
@@ -77,17 +77,17 @@ void helpme(char** argv){
 		printf("   To get status, and jump to run mode, OLS on COM2:\n");
 		printf("   ols-loader --port COM2 --run --status\n");
 
-		#else
-		printf("   To read Flash to HEX file 'OLS.hex' from OLS on \\dev\\ttyS1: \n");
-		printf("   ols-loader --port \\dev\ttyS1 --rH OLS.hex --read\n");
+	#else
+		printf("   To read Flash to HEX file 'OLS.hex' from OLS on /dev/ttyS1: \n");
+		printf("   ols-loader --port /dev/ttyS1 --rH OLS.hex --read\n");
 		printf("   or\n");
-	    printf("   ols-loader -p \\dev\ttyS1 --rH OLS.hex -r\n");
-		printf("   To erase and write flash, data in BIN file 'OLS.bin', OLS on \\dev\\ttyS1:\n");
-		printf("   ols-loader --p \\dev\\ttyS1 --wB OLS.hex --write --erase\n");
-		printf("   To get status, and jump to run mode, OLS on \\dev\\ttyS1:\n");
-		printf("   ols-loader --p \\dev\\ttyS1 --run --status\n");
+		printf("   ols-loader -p /dev/ttyS1 --rH OLS.hex -r\n");
+		printf("   To erase and write flash, data in BIN file 'OLS.bin', OLS on /dev/ttyS1:\n");
+		printf("   ols-loader --p /dev/ttyS1 --wB OLS.hex --write --erase\n");
+		printf("   To get status, and jump to run mode, OLS on /dev/ttyS1:\n");
+		printf("   ols-loader --p /dev/ttyS1 --run --status\n");
 
-		#endif
+	#endif
         printf("   Take note of the use of long options (--) and short options (-) in specifying parameters.\n");
         printf("   options and parameter are case-sensitive\n");
         exit(-1);
