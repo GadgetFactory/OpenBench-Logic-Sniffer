@@ -20,7 +20,7 @@ fi
 
 #Determine if we are in Windows on cygwin
 if [ "$OSTYPE" == 'linux-gnu' ]; then
-	if ["$(arch)" == 'x86-64' ]; then
+	if [ "$(arch)" == 'x86-64' ]; then
 		bindir=linbin64
 		export PATH=linbin64\:$PATH
 	else
